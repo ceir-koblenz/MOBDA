@@ -1,0 +1,2 @@
+SELECT c.COMMUNITY_UUID AS ID, c.lastmod, c.NAME AS title
+FROM sncomm.COMMUNITY c 
