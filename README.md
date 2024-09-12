@@ -1,6 +1,6 @@
 # MOBDA 1.0
 
-This repo contains a list of [**MOBDA - Materialised Ontology-Based Data Access Systems**](https://github.com/ceir-koblenz/MOBDA) developed by the [CEIR - Center for Enterprise Information Research](https://ceir.de/).
+This repo contains a prototype for [**MOBDA - Materialised Ontology-Based Data Access**](https://github.com/ceir-koblenz/MOBDA) developed by the [CEIR - Center for Enterprise Information Research](https://ceir.de/).
 
 MOBDA builds on several components: 
 - [**Neo4j**](https://neo4j.com/) as a target database
