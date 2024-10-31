@@ -1,0 +1,36 @@
+let 
+    //Enter the base URL for the Neo4j Server
+    __Neo4jURL = ">URL Server<", 
+    // Enter the name of the database in Neo4j
+    __Neo4jDatabase = ">database name<", 
+    // Enter the username for database access in the Neo4j database
+    __Username = ">username<", 
+    // Enter the user password for databases in the Neo4j database
+    __Password = ">password<", 
+    // Enter a Cypher Query returning full nodes.
+    __CypherQuery = "MATCH (n:BlogPost) RETURN n", 
+    // This step combines several steps to simplify and reduce the steps in Power Query to return data from Neo4j.
+    #"Ready To Expand Rows" = Table.ExpandListColumn(
+        Table.ExpandRecordColumn(
+            Table.FromList(
+                Json.Document(
+                    Web.Contents(__Neo4jURL & "/db/" & __Neo4jDatabase & "/tx/commit",
+                        [Headers = 
+                            [#"Content-Type"="application/json", 
+                            #"Authorization"="Basic " & Binary.ToText(Text.ToBinary(__Username & ":" & __Password, null, null)), 
+                            #"X-Stream"="true"
+                            ], 
+                        Content = Text.ToBinary("{""statements"": [ {""statement"": """ & __CypherQuery & """ } ] }")
+                        ]
+                        ) // This is the end of the Web.Contents container that makes the Neo4j HTTP API POST call.
+                    ) // This completes the Json.Document container wrapper that converts the Neo4j HTTP API call to a JSON document.
+                    [results]{0}[data], //This completes the Table.FromList() parameters
+                    Splitter.SplitByNothing(), //This completes the Table.FromList() parameters
+                null, null, ExtraValues.Error), //This completes the Table.FromList() parameters
+            "Column1", {"row"}, {"row"}),"row" //This completes the Table. ExpandedRecordColumn() parameters
+        ),
+    #"Renamed Columns" = Table.RenameColumns(#"Ready To Expand Rows",{{"row", "BlogPost"}}),
+    #"Expanded BlogPost" = Table.ExpandRecordColumn(#"Renamed Columns", "BlogPost", {"views", "created", "last_updated", "title", "id", "content"}, {"views", "created", "last_updated", "title", "id", "content"}) 
+    //second "" contains name of the node, the first {} is the property name in Neo4j, second {} is the column name for Power BI
+in
+    #"Expanded BlogPost"

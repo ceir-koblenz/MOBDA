@@ -1,0 +1,5 @@
+db_infoneo:
+  uri: neo4j://ma-lschloemer.bas.uni-koblenz.de:7687
+  user: 
+  password: neo4jneo4j
+  database: neo4j

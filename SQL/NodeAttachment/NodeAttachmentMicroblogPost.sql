@@ -1,3 +1,0 @@
-SELECT boref.OBJECT_ID AS id, boref.CREATION_DATE AS created, boref.DISPLAY_NAME AS title, BOREF.item_id, person.EXID, BOREF.OBJECT_EXTERNAL_ID 
-FROM homepage.BOARD_OBJECT_REFERENCE boref
-JOIN HOMEPAGE.PERSON person ON person.PERSON_ID = boref.AUTHOR_ID 
